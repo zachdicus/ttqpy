@@ -3,7 +3,14 @@ dist: trusty
 python:
 - 3.5.1
 install:
-  - pip install -r requirements.txt
+- pip install -r requirements.txt
 script:
 - python ./setup.py install
 - py.test --cov ttqpy test
+deploy:
+  provider: heroku
+  api_key:
+    secure: QF+HH6r6es3ZPDveVmp3mP1GiftQHpmusmfv1kOUBP9ANLBruje60X0D3NtRS+e3comGPj1Vv7z1ghghYdCo7VqIxbjnMI6LxdfSnV2r7JSPRSDzJ7z6UnTohrVzbA2hGOJ/EdNbHTTyxoFFnIWTwgmIsobcB/moK++gSQHsjlrYFGuPPhLdA8p7RFEuUaE/f7wmnrGlwQgDuwzUG9H1hWtfMRq914t6DWX4GDqr4Cxn/0qVQI+ggWiqmyj21Ofra1/WZJjzQtv1vVGGTFjBJkiopfvhxQV/gJ8lgtom6i89yv3YhodcGxYsnb6kovD7Vnt1DfZUmEIoJ0R6x9etRP+Fk4nDUfAW+t3n7JdjjNNBCW5RAj+wOH/hQfkp5ET8zbTOLci08l7R+HY6HM83yi+EUTZ0th5KPWc1nNLj3PzeN+m1SInOXzoN4AeaSpTW5AQ6rXqfZwD3fApFoDtVt9bYi8CshHT2MwyHDB7lX7P0UUFS8RkkX2g0vPl0xOGOZz5bMs3puJAK+519EQcOagKeBk24LcLMKXPOniMCXM91FEaAcPYfqSp1AAHMx+N/Oi7zibljCPOfRa0vEl2pS1UvvdpN0XyyGtwdH1NQabg8QhKiVGbsHYJsPq0yoMmaAR/EkCgTsZgM207K1eNSkZ1QDumAYYW0fVIy5Yp4r7c=
+  app: ttqpy
+  on:
+    repo: zachdicus/ttqpy

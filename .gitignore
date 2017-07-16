@@ -1,0 +1,5 @@
+.coverage
+test.db
+__pycache__
+.idea
+.cache
