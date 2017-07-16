@@ -1,5 +1,5 @@
 import unittest
-from ttqpy.Question import AToZ, OneToX, Question, MultipleChoice, TrueFalse
+from ttqpy import AToZ, OneToX, Question, MultipleChoice, TrueFalse
 
 
 class TestQuestions(unittest.TestCase):

@@ -1,3 +1,5 @@
 pytest==2.9.2
 pytest-runner==2.9
 pytest-cov==2.5.1
+Flask==0.12.2
+SQLAlchemy==1.1.11
