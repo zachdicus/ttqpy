@@ -1,5 +1,5 @@
 import unittest
-from ttqpy.Question import AToZ, OneToX, Question
+from ttqpy.Question import AToZ, OneToX, Question, MultipleChoice, TrueFalse
 
 
 class TestQuestions(unittest.TestCase):
@@ -53,3 +53,21 @@ class TestQuestions(unittest.TestCase):
         question.provide_answer("what?")
         with self.assertRaises(ValueError):
             question.is_correct()
+
+        question = MultipleChoice("What is false", "False", ["False", "True", "Error", "True"])
+        question.provide_answer("Turd")
+        self.assertEqual(question.is_correct(), False)
+
+        question.provide_answer("False")
+        self.assertEqual(question.is_correct(), True)
+
+
+        with self.assertRaises(ValueError):
+            question = MultipleChoice("What is false", "False", None)
+
+        question = TrueFalse("Is this true?", "True")
+        question.provide_answer("False")
+        self.assertEqual(question.is_correct(), False)
+
+        question.provide_answer("True")
+        self.assertEqual(question.is_correct(), True)

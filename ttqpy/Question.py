@@ -56,7 +56,7 @@ class Question:
 class MultipleChoice(Question):
 
     def __init__(self, question, correct_answer, options):
-        super().__init__(question, correct_answer, options)
+        super().__init__(question, correct_answer)
 
         self.options = OrderedDict()
         self.labels = AToZ()
