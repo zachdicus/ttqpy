@@ -16,3 +16,4 @@ class Test:
         self.questions[self.counter.get_next()] = question_type.question(question, answer, options)
 
     def save(self, session):
+        pass
