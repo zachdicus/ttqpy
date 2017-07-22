@@ -4,3 +4,4 @@ pytest-cov==2.5.1
 Flask==0.12.2
 SQLAlchemy==1.1.11
 gunicorn==19.7.1
+flask-sqlalchemy==2.2

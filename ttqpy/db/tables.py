@@ -1,17 +1,87 @@
-from sqlalchemy import Column, Integer, String, create_engine
+from sqlalchemy import Column, Integer, String, create_engine, ForeignKey, Boolean, Float
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, relationship
 
 Base = declarative_base()
 
 
-class User(Base):
-    __tablename__ = 'users'
+class Test(Base):
+    __tablename__ = 'test'
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    fullname = Column(String)
-    password = Column(String)
+    subject = Column(String)
+    weight = Column(Float)
+
+    questions = relationship("Question", back_populates="test")
+
+    def __init__(self, name, subject, weight):
+        self.name = name
+        self.subject = subject
+        self.weight = weight
+
+
+class Question(Base):
+    __tablename__ = "question"
+
+    id = Column(Integer, primary_key=True)
+    test_id = Column(Integer, ForeignKey('test.id'))
+    question = Column(String)
+    correct_answer = Column(String)
+    manually_graded = Column(Boolean)
+    number = Column(Integer)
+
+    test = relationship("Test", back_populates="questions")
+    options = relationship("Option", back_populates="question")
+    answers = relationship("Answer", back_populates="question")
+
+    def __init__(self, question, answer, manually_graded, number):
+        self.question = question
+        self.answer = answer
+        self.manually_graded = manually_graded
+        self.number = number
+
+
+class Answer(Base):
+    __tablename__ = "answer"
+
+    id = Column(Integer, primary_key=True)
+    question_id = Column(Integer, ForeignKey('question.id'))
+    answer_type_id = Column(Integer, ForeignKey('answer_type.id'))
+    answer = Column(String)
+    question = relationship("Question", back_populates="answers")
+    answer_type = relationship("AnswerType", back_populates="answers")
+
+    def __init__(self, answer_type, answer):
+        self.answer_type = answer_type
+        self.answer = answer
+
+
+class AnswerType(Base):
+    __tablename__ = "answer_type"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+
+    answers = relationship("Answer", back_populates="answer_type")
+
+    def __init__(self, name):
+        self.name = name
+
+
+class Option(Base):
+    __tablename__ = "option"
+
+    id = Column(Integer, primary_key=True)
+    question_id = Column(Integer, ForeignKey("question.id"))
+    value = Column(String)
+    label = Column(String)
+
+    question = relationship("Question", back_populates="options")
+
+    def __init__(self, value, label):
+        self.value = value
+        self.label = label
 
 
 def create_connection_string(database):
