@@ -2,9 +2,9 @@ import os
 from ttqpy.db import create_session
 import sqlite3
 
-enviroment = os.getenv("TTQPY_SYSTEM", "DEVELOPMENT")
+environment = os.getenv("TTQPY_SYSTEM", "DEVELOPMENT")
 
-if enviroment == "DEVELOPMENT":
+if environment == "DEVELOPMENT":
     basedir = os.path.abspath(os.path.dirname(__file__))
     database = os.path.join(basedir, 'app.db')
     db_uri = 'sqlite:///' + database

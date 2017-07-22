@@ -1,6 +1,7 @@
 from flask import Flask, g
 from ttqpy.app.views.controller import main
 from ttqpy.db import db
+import ttqpy.app.config as config
 
 import os
 import logging
