@@ -14,14 +14,21 @@ if environment == "DEVELOPMENT":
         c = sqlite3.connect(database)
         c.close()
 
+    # Load the tables
+    session = create_session(db_uri, True)
+    session.commit()
+    session.close()
 else:
     db_uri = os.getenv("DATABASE_URL")
 
-SQLALCHEMY_DATABASE_URI = db_uri
-SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-
-# Load the tables
-session = create_session(SQLALCHEMY_DATABASE_URI, True)
-session.commit()
-session.close()
+class Config():
+    SQLALCHEMY_DATABASE_URI = db_uri
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 587
+    MAIL_USE_TLS = True
+    MAIL_USE_SSL = False
+    MAIL_USERNAME = 'ttqpynoreply@gmail.com'
+    MAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+    DEBUG = True

@@ -1,9 +1,47 @@
-from sqlalchemy import Column, Integer, String, create_engine, ForeignKey, Boolean, Float
+import uuid
+import datetime
+from sqlalchemy import Column, Integer, String, create_engine, ForeignKey, Boolean, Float, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
+from passlib.apps import custom_app_context as pwd_context
 
 Base = declarative_base()
 
+
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    username = Column(String(32))
+    password_hash = Column(String(128))
+    first_name = Column(String)
+    last_name = Column(String)
+    email = Column(String)
+    email_verified = Column(Boolean)
+    token = Column(String)
+    token_expiration = Column(DateTime)
+    admin = Column(Boolean)
+
+    def hash_password(self, password):
+        self.password_hash = pwd_context.encrypt(password)
+
+    def verify_password(self, password):
+        return pwd_context.verify(password, self.password_hash)
+
+    def __init__(self, username, first_name, last_name, email):
+        self.username = username
+        self.first_name = first_name
+        self.last_name = last_name
+        self.email = email
+        self.admin = False
+        self.email_verified = False
+
+    def generate_auth_token(self, expiration=600):
+        self.token_expiration = datetime.datetime.now() + datetime.timedelta(0, expiration)
+        self.token = str(uuid.uuid4())
+
+    @staticmethod
+    def verify_auth_token(token):
+        return True
 
 class Test(Base):
     __tablename__ = 'test'
@@ -68,6 +106,11 @@ class AnswerType(Base):
     def __init__(self, name):
         self.name = name
 
+    def serialize(self):
+        return {
+            "id": self.name,
+            "name": self.name
+        }
 
 class Option(Base):
     __tablename__ = "option"

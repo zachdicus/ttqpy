@@ -1,6 +1,5 @@
-from flask import Blueprint, render_template, abort, g
-from jinja2 import TemplateNotFound
-from ttqpy.db import db
+from flask import Blueprint, jsonify
+import flask as flask
 
 main = Blueprint('main', __name__)
 
@@ -8,4 +7,8 @@ main = Blueprint('main', __name__)
 @main.route('/index')
 @main.route('/')
 def hello_world():
-    return 'Hello, World! {}'.format(db.__dict__)
+    """GET to generate a list of endpoints and their docstrings"""
+    urls = dict([(r.rule, str(r))
+                 for r in flask.current_app.url_map.iter_rules()
+                 if not r.rule.startswith('/static')])
+    return flask.render_template('index.html', urls=urls)
